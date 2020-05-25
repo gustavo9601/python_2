@@ -23,6 +23,9 @@ class Empleado(Persona):
         return "nombre => " + self.nombre + ", edad => " + str(self.edad) + ", sueldo => " + str(self.sueldo)
 
 
+"""
+Herencia multiple
+"""
 class Empleado2(Empresa, Persona):
     def __init__(self, company, nit, nombre, edad):
         # Cuando es herencia multiple se pueden pasar parametro llamando directamente a la clase
