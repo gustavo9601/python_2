@@ -7,3 +7,9 @@ print(funciones.multiplicar(5,5,100))
 from modules.modulo_clase import Supermarket
 supermarket1 = Supermarket('Carne', '2 LB')
 print(supermarket1)
+
+"""
+dir() lista los nombres de los modulos definidos en el archivo ejecutado
+dir(nombre_Modulo) lista los nombres de los modulos definidos del modulo pasado por parametro
+"""
+print("dir(funciones):", dir(funciones))

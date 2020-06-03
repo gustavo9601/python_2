@@ -24,7 +24,7 @@ class Conexion:
         if cls.__pool == None:
             try:
                 # usamos el objeto de pysql pool  para crear el pool
-                # pool.SimpleConnectionPool(cantidad_minima_conexiones, cantidad_maxima_conexiones)
+                # pool.SimpleConnectionPool(cantidad_minima_conexiones, cantidad_maxima_conexiones, datos_de_conexion)
                 cls.__pool = pool.SimpleConnectionPool(
                     cls.__MIN_CON,
                     cls.__MAX_CON,
