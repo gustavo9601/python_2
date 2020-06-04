@@ -10,6 +10,18 @@ texto = "Hello world"
 msm = "{}".format(texto)
 print(msm)
 
+# formateando a decimal   {:f}  {:10f}  cantidad_decimales F
+msm_decimal = "{:f} + {:10f} = {result:0f}".format(5, 10, result=15)
+print("msm_decimal", msm_decimal)
+
+# Formateando un texto, y agregando espacios si no cumple con el valor
+# {name:15}  # variable:cantidad_espacios a completar
+# {name:<15}  <15  indica hacia donde pondra los espacios
+# {name:*>15-}  *>  indica hacia donde pondra los espacios y con que caracter o letra rellenara
+msm_espacios = "Hola {name:15}".format(name='Gustavo')
+print("msm_espacios", msm_espacios)
+msm_espacios = "Hola {name:*>15}".format(name='Gustavo')
+print("msm_espacios", msm_espacios)
 """
 Concatenando los elementos de una lista
 'separador'.join(lista[])
@@ -17,7 +29,7 @@ Concatenando los elementos de una lista
 msm = ' '.join(['Hola', name])
 print(msm)
 
-"""
+""" 
 Trasnformaciones de strings
 """
 
@@ -51,5 +63,3 @@ print('texto.isupper()', texto.isupper())
 print('texto.isspace()', texto.isspace())
 print('texto.isalpha()', texto.isalpha())
 print('texto.isalnum()', texto.isalnum())
-
-
