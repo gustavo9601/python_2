@@ -43,7 +43,7 @@ class NumerosIgualesExepcion(Exception):
 
 try:
     val1 = int(input("Digite valor 1:\n"))
-    val2 = int(input("Digite valor 1:\n"))
+    val2 = int(input("Digite valor 2:\n"))
 
     # validacion simple si son iguales
     if val1 == val2:
