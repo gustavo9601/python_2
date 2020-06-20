@@ -7,6 +7,7 @@ class CajaRegistradora:
     cliente = None
     ticket = 1
     valor_a_pagar = 0
+    valor_pagado = 0
     lista_productos = []
     lista_productos_agregados = []
 
@@ -67,6 +68,7 @@ class CajaRegistradora:
         if cls.valor_a_pagar == 0:
             cls.valor_a_pagar = cls.subtotal_compra_carrito()
         cls.valor_a_pagar -= dinero_cliente
+        cls.valor_pagado += dinero_cliente
         return cls.valor_a_pagar
 
     @classmethod
@@ -95,11 +97,14 @@ class CajaRegistradora:
 
         print(f"""
 ----------------------------------------------------
-    Total: {cls.subtotal_compra_carrito()} COP
-    Cantidad productos: {cls.cantidad_productos_carrito()}
-    Cambio a favor del cliente: {abs(cls.valor_a_pagar)}
+        Total: {cls.subtotal_compra_carrito()} COP
+        Cantidad productos: {cls.cantidad_productos_carrito()}
+        Valor pagado por el cliente: {abs(cls.valor_pagado)}
+        Cambio a favor del cliente: {abs(cls.valor_a_pagar)}
+    
 
-Gracias por su compra, vuelva pronto !!!!!
+      Gracias por su compra, vuelva pronto !!!!!
+-----------------------------------------------------
     """)
 
     @classmethod
@@ -108,6 +113,7 @@ Gracias por su compra, vuelva pronto !!!!!
         cls.ticket += 1
         cls.cliente = None
         cls.valor_a_pagar = 0
+        cls.valor_pagado = 0
 
 
 def menuOpciones():
@@ -220,4 +226,5 @@ def menuOpciones():
     print("Gracias por usar la caja_registradora_1.0 Courser GM")
 
 
-menuOpciones()
+if __name__ == '__main__':
+    menuOpciones()
