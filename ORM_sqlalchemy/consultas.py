@@ -66,6 +66,7 @@ Base.metadata.create_all(engine)
 author1 = Author(firstname='Gustavo', lastname='Marquez')
 author2 = Author(firstname='Laura', lastname='Prieto')
 
+
 # Creando la sesion para manipular la data
 Session = sessionmaker(bind=engine)
 
