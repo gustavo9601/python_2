@@ -50,50 +50,311 @@ class Estudiante(Base):
     def __repr__(self):
         return f"Estudiante id: {self.id} | Nombre: {self.nombre}"
 
+
 class Horario(Base):
     __tablename__ = 'horario'
     id = Column(Integer, Sequence('horario_id_seq'), primary_key=True)
     dia_semana = Column(String)
     hora_inicio = Column(String)
     hora_fin = Column(String)
-    #relacion uno a uno con profesor
+    # relacion uno a uno con profesor
     profesor_id = Column(Integer, ForeignKey('profesor.id'))
     profesor = relationship('Profesor', uselist=False, back_populates='horario')
     # relacion uno a uno con Curso
     curso_id = Column(Integer, ForeignKey('curso.id'))
     curso = relationship('Curso', uselist=False, back_populates='horario')
 
-
-
     def __repr__(self):
         return f"Horario id: {self.id} | Dia semana: {self.dia_semana} | Hora Inicio: {self.hora_inicio} | Hora Fin: {self.hora_fin}"
 
 
-
 if __name__ == '__main__':
-    # Crea el esquema
-    Base.metadata.create_all(engine)
 
-    curso1 = Curso(nombre='PHP', descripcion='Solo web')
-    #print("curso1", curso1)
+    mensaje_bienvenida = """
+    =============================================
+    =============================================
+    Bienvenido al Sistema de Escuelas Coursera GM
+    =============================================
+    =============================================
+    """
+    mensaje_menu_inicial = """
+     Seleccione una de las siguientes opciones
+           para interactuar con el menu
+    =============================================
+                    MENU INICIAL
+    =============================================
+    1. Menu creacion
+    2. Menu de asociacion
+    3. Menu de reportes
+    4. Guardar en memoria
+    5. Salir de la aplicacion
+    =============================================
+    """
 
-    profesor1 = Profesor(nombre='Gustavo', curso=curso1)
-    #print("profesor1", profesor1)
+    mensaje_menu_creacion = """
+    =============================================
+                  MENU CREACION
+      Seleccione una de las siguientes opciones
+    =============================================
+    1. Crear curso
+    2. Crear profesor
+    3. Crear estudiante
+    4. Crear horario
+    5. Volver al menu anterior
+    =============================================
+    """
 
-    profesor2 = Profesor(nombre='Meliza', curso=curso1)
-    #print("profesor2", profesor2)
+    mensaje_menu_asosiacion = """
+    =============================================
+                MENU ASOCIACION
+      Seleccione una de las siguientes opciones
+    =============================================
+    1. Asociar a un curso un profesor
+    2. Asociar a un profesor un horario
+    3. Asociar a un estudiante un curso
+    4. Asociar a un horario un curso
+    5. Volver al menu anterior
+    =============================================
+        """
 
-    estudiante1 = Estudiante(nombre='Jose', curso=curso1)
-    #print("estudiante1", estudiante1)
+    mensaje_menu_reportes = """
+    =============================================
+                 MENU REPORTES
+      Seleccione una de las siguientes opciones
+    =============================================
+    1. Listar cursos
+    2. Listar profesores
+    3. Listar estudiantes
+    4. Listar horarios
+    5. Listar alumnos por id curso
+    6. Listar horarios por id profesor
+    7. Listar horarios por id curso
+    8. Volver al menu anterior
+    =============================================
+            """
+    mensaje_invalido = """
+    =============================================
+                 OPCION INVALIDA
+    =============================================
+    """
+    mensaje_rellenar_campos = """
+    =============================================
+           DILIGENCIE LOS SIGUIENTES CAMPOS
+    =============================================
+    """
 
-    horario1 = Horario(dia_semana='lunes', hora_inicio='01:00', hora_fin='02:00', profesor=profesor1)
-    #print("horario1", horario1)
 
-    # Creando la sesion para manipular la data
-    Session = sessionmaker(bind=engine)
+    def imprimir_cursos(session):
+        print("======================================")
+        print("Lista de cursos")
+        print("======================================")
+        for row in session.query(Curso).all():
+            print(row)
 
-    session = Session()
-    # add_all(arreglo de objetos de la clase)  // añade mulitples registros
-    session.add_all([curso1, profesor1, profesor2, estudiante1])
 
-    print(session.query(Curso).all()[0].profesor[0].horario)
+    def imprimir_profesores(session):
+        print("======================================")
+        print("Lista de profesores")
+        print("======================================")
+        for row in session.query(Profesor).all():
+            print(row)
+
+
+    def imprimir_estudiantes(session):
+        print("======================================")
+        print("Lista de estudiantes")
+        print("======================================")
+        for row in session.query(Estudiante).all():
+            print(row)
+
+
+    def imprimir_horarios(session):
+        print("======================================")
+        print("Lista de horarios")
+        print("======================================")
+        for row in session.query(Horario).all():
+            print(row)
+
+
+    def menu():
+        print(mensaje_bienvenida)
+        opcion_inicial = int(input(mensaje_menu_inicial))
+
+        # Crea el esquema
+        Base.metadata.create_all(engine)
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        while not opciones_validas(1, 6, opcion_inicial):
+            print(mensaje_invalido)
+            opcion_inicial = int(input(mensaje_menu_inicial))
+
+        while opcion_inicial != 5:
+            if opcion_inicial == 1:
+                opcion_creacion = int(input(mensaje_menu_creacion))
+                while not opciones_validas(1, 6, opcion_creacion):
+                    opcion_creacion = int((input(mensaje_menu_creacion)))
+                    # creacion curso
+                if opcion_creacion == 1:
+                    print(mensaje_rellenar_campos)
+                    nombre_curso = input("Nombre del curso: ")
+                    descripcion_curso = input("Descripcion del curso: ")
+                    nuevo_curso = Curso(nombre=nombre_curso, descripcion=descripcion_curso)
+                    session.add(nuevo_curso)
+                    # creacion profesor
+                elif opcion_creacion == 2:
+                    print(mensaje_rellenar_campos)
+                    nombre_profesor = input("Nombre del profesor: ")
+                    nuevo_profesor = Profesor(nombre=nombre_profesor)
+                    session.add(nuevo_profesor)
+                    # crear estudiante
+                elif opcion_creacion == 3:
+                    print(mensaje_rellenar_campos)
+                    nombre_estudiante = input("Nombre del estudiante: ")
+                    nuevo_estudiante = Estudiante(nombre=nombre_estudiante)
+                    session.add(nuevo_estudiante)
+                    # crear horario
+                elif opcion_creacion == 4:
+                    print(mensaje_rellenar_campos)
+                    dia_semana_horario = input("Dia de la semana (Lunes a Domingo): ")
+                    hora_inicio_horario = input("Hora de inicio (HH:MM): ")
+                    hora_fin_horario = input("Hora de Fin (HH:MM): ")
+                    nuevo_horario = Horario(dia_semana=dia_semana_horario, hora_inicio=hora_inicio_horario,
+                                            hora_fin=hora_fin_horario)
+                    session.add(nuevo_horario)
+                    # Volver al menu anterior
+                elif opcion_creacion == 5:
+                    opcion_inicial = int(input(mensaje_menu_inicial))
+                    while not opciones_validas(1, 6, opcion_inicial):
+                        print(mensaje_invalido)
+                        opcion_inicial = int(input(mensaje_menu_inicial))
+                    # opcion invalida
+                else:
+                    print(mensaje_invalido)
+                    opcion_inicial = int(input(mensaje_menu_inicial))
+                    while not opciones_validas(1, 6, opcion_inicial):
+                        print(mensaje_invalido)
+                        opcion_inicial = int(input(mensaje_menu_inicial))
+            elif opcion_inicial == 2:
+                opcion_asociacion = int(input(mensaje_menu_asosiacion))
+                while not opciones_validas(1, 6, opcion_asociacion):
+                    opcion_asociacion = int((input(mensaje_menu_asosiacion)))
+
+                # Asociar a un curso un profesor
+                if opcion_asociacion == 1:
+                    if session.query(Curso).count() > 0:
+                        print("Por favor digite el ID de uno de los siguientes cursos:")
+                        imprimir_cursos(session)
+                        id_curso = int(input())
+                        curso = session.query(Curso).filter(Curso.id == id_curso).first()
+                        if curso:
+                            if session.query(Profesor).count() > 0:
+                                print("Por favor digite el ID de uno de los siguientes profesores")
+                                imprimir_profesores(session)
+                                id_profesor = int(input())
+                                profesor = session.query(Profesor).filter(Profesor.id == id_profesor).first()
+                                if profesor:
+                                    curso.profesor.append(profesor)
+                                else:
+                                    print("*******Profesor no encontrado*****")
+                            else:
+                                print("*****No hay profesores creados****")
+                        else:
+                            print("*******Curso no encontrado*****")
+                    else:
+                        print("*****No hay cursos creados****")
+
+                # Asociar a un profesor un horario
+                elif opcion_asociacion == 2:
+                    pass
+                # Asociar a un estudiante un curso
+                elif opcion_asociacion == 3:
+                    if session.query(Estudiante).count() > 0:
+                        print("Por favor digite el ID de uno de los siguientes estudiantes:")
+                        imprimir_estudiantes(session)
+                        id_estudiante = int(input())
+                        estudiante = session.query(Estudiante).filter(Estudiante.id == id_estudiante).first()
+                        if estudiante:
+                            if session.query(Curso).count() > 0:
+                                print("Por favor digite el ID de uno de los siguientes cursos")
+                                imprimir_cursos(session)
+                                id_curso = int(input())
+                                curso = session.query(Curso).filter(Curso.id == id_curso).first()
+                                if curso:
+                                    estudiante.curso = curso
+                                else:
+                                    print("*******Curso no encontrado*****")
+                            else:
+                                print("*****No hay cursos creados****")
+                        else:
+                            print("*******Estudiante no encontrado*****")
+                    else:
+                        print("*****No hay estudiantes creados****")
+                # Asociar a un horario un curso
+                elif opcion_asociacion == 4:
+                    pass
+                elif opcion_asociacion == 5:
+                    opcion_inicial = int(input(mensaje_menu_inicial))
+                    while not opciones_validas(1, 6, opcion_inicial):
+                        print(mensaje_invalido)
+                        opcion_inicial = int(input(mensaje_menu_inicial))
+                else:
+                    print(mensaje_invalido)
+                    opcion_inicial = int(input(mensaje_menu_inicial))
+                    while not opciones_validas(1, 6, opcion_inicial):
+                        print(mensaje_invalido)
+                        opcion_inicial = int(input(mensaje_menu_inicial))
+
+            elif opcion_inicial == 3:
+                opcion_reportes = int(input(mensaje_menu_reportes))
+                while not opciones_validas(1, 9, opcion_reportes):
+                    opcion_reportes = int((input(mensaje_menu_reportes)))
+                # Listar cursos
+                if opcion_reportes == 1:
+                    imprimir_cursos(session)
+                # listar profesores
+                elif opcion_reportes == 2:
+                    imprimir_profesores(session)
+                # Listar estudiantes
+                elif opcion_reportes == 3:
+                    imprimir_estudiantes(session)
+                # listar horarios
+                elif opcion_reportes == 4:
+                    imprimir_horarios(session)
+                # Listar alumnos por id curso
+                elif opcion_reportes == 5:
+                    print("Por favor digite el ID de uno de los siguientes cursos:")
+                    imprimir_cursos(session)
+                    id_curso = int(input())
+                    curso = session.query(Curso).filter(Curso.id == id_curso).first()
+                    if curso:
+                        print(session.query(Estudiante).join(Curso).filter(Curso.id == id_curso).all())
+                    else:
+                        print("*******Curso no encontrado*****")
+                # Listar horarios por id profesor
+                elif opcion_reportes == 6:
+                    pass
+                # Listar horarios por id curso
+                elif opcion_reportes == 7:
+                    pass
+                # volver al menu anterior
+                elif opcion_reportes == 8:
+                    opcion_inicial = int(input(mensaje_menu_inicial))
+                    while not opciones_validas(1, 6, opcion_inicial):
+                        print(mensaje_invalido)
+                        opcion_inicial = int(input(mensaje_menu_inicial))
+                else:
+                    print(mensaje_invalido)
+                    opcion_inicial = int(input(mensaje_menu_inicial))
+                    while not opciones_validas(1, 6, opcion_inicial):
+                        print(mensaje_invalido)
+                        opcion_inicial = int(input(mensaje_menu_inicial))
+
+
+    def opciones_validas(desde, hasta, opcion):
+        for op in range(desde, hasta):
+            if opcion == op:
+                return True
+        return False
+
+
+    menu()
