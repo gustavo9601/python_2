@@ -15,12 +15,13 @@ class Curso(Base):
     profesor = relationship('Profesor', back_populates="curso")
 
     # relacion estudiante
-    estudiante = relationship('Estudiante', uselist=False, back_populates="curso")
+    estudiante = relationship('Estudiante', back_populates="curso")
     # relacion con horario
-    horario = relationship('Horario', uselist=False, back_populates="curso")
+    horario_id = Column(Integer, ForeignKey('horario.id'))
+    horario = relationship('Horario', back_populates="curso")
 
     def __repr__(self):
-        return f"Curso id: {self.id} | Nombre: {self.nombre} | Descripcion: {self.descripcion}"
+        return f"Curso id: {self.id} | Nombre Curso: {self.nombre} | Descripcion Curso: {self.descripcion}"
 
 
 class Profesor(Base):
@@ -35,7 +36,7 @@ class Profesor(Base):
     horario = relationship('Horario', uselist=False, back_populates="profesor")
 
     def __repr__(self):
-        return f"Profesor id: {self.id} | Nombre: {self.nombre}"
+        return f"Profesor id: {self.id} | Nombre Profesor: {self.nombre}"
 
 
 class Estudiante(Base):
@@ -45,10 +46,10 @@ class Estudiante(Base):
 
     # relacion uno a uno con Curso
     curso_id = Column(Integer, ForeignKey('curso.id'))
-    curso = relationship('Curso', uselist=False, back_populates='estudiante')
+    curso = relationship('Curso', back_populates='estudiante')
 
     def __repr__(self):
-        return f"Estudiante id: {self.id} | Nombre: {self.nombre}"
+        return f"Estudiante id: {self.id} | Nombre Estudiante: {self.nombre}"
 
 
 class Horario(Base):
@@ -60,9 +61,8 @@ class Horario(Base):
     # relacion uno a uno con profesor
     profesor_id = Column(Integer, ForeignKey('profesor.id'))
     profesor = relationship('Profesor', uselist=False, back_populates='horario')
-    # relacion uno a uno con Curso
-    curso_id = Column(Integer, ForeignKey('curso.id'))
-    curso = relationship('Curso', uselist=False, back_populates='horario')
+
+    curso = relationship('Curso', back_populates='horario')
 
     def __repr__(self):
         return f"Horario id: {self.id} | Dia semana: {self.dia_semana} | Hora Inicio: {self.hora_inicio} | Hora Fin: {self.hora_fin}"
@@ -86,8 +86,7 @@ if __name__ == '__main__':
     1. Menu creacion
     2. Menu de asociacion
     3. Menu de reportes
-    4. Guardar en memoria
-    5. Salir de la aplicacion
+    4. Salir de la aplicacion
     =============================================
     """
 
@@ -110,10 +109,9 @@ if __name__ == '__main__':
       Seleccione una de las siguientes opciones
     =============================================
     1. Asociar a un curso un profesor
-    2. Asociar a un profesor un horario
-    3. Asociar a un estudiante un curso
-    4. Asociar a un horario un curso
-    5. Volver al menu anterior
+    2. Asociar a un estudiante un curso
+    3. Asociar a un horario un curso
+    4. Volver al menu anterior
     =============================================
         """
 
@@ -142,6 +140,11 @@ if __name__ == '__main__':
            DILIGENCIE LOS SIGUIENTES CAMPOS
     =============================================
     """
+    mensaje_despedida = """
+        =============================================
+            !!! GRACIAS POR USAR EL SISTEMA !!!
+        =============================================
+        """
 
 
     def imprimir_cursos(session):
@@ -184,11 +187,11 @@ if __name__ == '__main__':
         Base.metadata.create_all(engine)
         Session = sessionmaker(bind=engine)
         session = Session()
-        while not opciones_validas(1, 6, opcion_inicial):
+        while not opciones_validas(1, 5, opcion_inicial):
             print(mensaje_invalido)
             opcion_inicial = int(input(mensaje_menu_inicial))
 
-        while opcion_inicial != 5:
+        while opcion_inicial != 4:
             if opcion_inicial == 1:
                 opcion_creacion = int(input(mensaje_menu_creacion))
                 while not opciones_validas(1, 6, opcion_creacion):
@@ -262,12 +265,8 @@ if __name__ == '__main__':
                             print("*******Curso no encontrado*****")
                     else:
                         print("*****No hay cursos creados****")
-
-                # Asociar a un profesor un horario
-                elif opcion_asociacion == 2:
-                    pass
                 # Asociar a un estudiante un curso
-                elif opcion_asociacion == 3:
+                elif opcion_asociacion == 2:
                     if session.query(Estudiante).count() > 0:
                         print("Por favor digite el ID de uno de los siguientes estudiantes:")
                         imprimir_estudiantes(session)
@@ -290,20 +289,39 @@ if __name__ == '__main__':
                     else:
                         print("*****No hay estudiantes creados****")
                 # Asociar a un horario un curso
+                elif opcion_asociacion == 3:
+                    if session.query(Horario).count() > 0:
+                        print("Por favor digite el ID de uno de los siguientes horarios:")
+                        imprimir_horarios(session)
+                        id_horario = int(input())
+                        horario = session.query(Horario).filter(Horario.id == id_horario).first()
+                        if horario:
+                            if session.query(Curso).count() > 0:
+                                print("Por favor digite el ID de uno de los siguientes cursos")
+                                imprimir_cursos(session)
+                                id_curso = int(input())
+                                curso = session.query(Curso).filter(Curso.id == id_curso).first()
+                                if curso:
+                                    curso.horario = horario
+                                else:
+                                    print("*******Curso no encontrado*****")
+                            else:
+                                print("*****No hay cursos creados****")
+                        else:
+                            print("*******Horario no encontrado*****")
+                    else:
+                        print("*****No hay horarios creados****")
                 elif opcion_asociacion == 4:
-                    pass
-                elif opcion_asociacion == 5:
                     opcion_inicial = int(input(mensaje_menu_inicial))
-                    while not opciones_validas(1, 6, opcion_inicial):
+                    while not opciones_validas(1, 5, opcion_inicial):
                         print(mensaje_invalido)
                         opcion_inicial = int(input(mensaje_menu_inicial))
                 else:
                     print(mensaje_invalido)
                     opcion_inicial = int(input(mensaje_menu_inicial))
-                    while not opciones_validas(1, 6, opcion_inicial):
+                    while not opciones_validas(1, 5, opcion_inicial):
                         print(mensaje_invalido)
                         opcion_inicial = int(input(mensaje_menu_inicial))
-
             elif opcion_inicial == 3:
                 opcion_reportes = int(input(mensaje_menu_reportes))
                 while not opciones_validas(1, 9, opcion_reportes):
@@ -327,15 +345,46 @@ if __name__ == '__main__':
                     id_curso = int(input())
                     curso = session.query(Curso).filter(Curso.id == id_curso).first()
                     if curso:
-                        print(session.query(Estudiante).join(Curso).filter(Curso.id == id_curso).all())
+                        print("======================================")
+                        print("Lista de estudiantes por el ID de curso: " + str(id_curso))
+                        print("======================================")
+                        for rowE, rowC in session.query(Estudiante, Curso).join(Curso).filter(
+                                Curso.id == id_curso).all():
+                            print(rowE, '|', rowC)
                     else:
                         print("*******Curso no encontrado*****")
                 # Listar horarios por id profesor
                 elif opcion_reportes == 6:
-                    pass
+                    print("Por favor digite el ID de uno de los siguientes profesores:")
+                    imprimir_profesores(session)
+                    id_profesor = int(input())
+                    profesor = session.query(Profesor).filter(Profesor.id == id_profesor).first()
+                    if profesor:
+                        print("======================================")
+                        print("Lista de horarios por el ID de profesor: " + str(id_profesor))
+                        print("======================================")
+                        for rowP, rowC, rowH in session.query(Profesor, Curso, Horario).filter(
+                                Profesor.id == id_profesor).filter(
+                            Profesor.curso_id == Curso.id).filter(
+                            Curso.horario_id == Horario.id).all():
+                            print(rowP, '|', rowC, '|', rowH)
+                    else:
+                        print("*******Profesor no encontrado*****")
                 # Listar horarios por id curso
                 elif opcion_reportes == 7:
-                    pass
+                    print("Por favor digite el ID de uno de los siguientes cursos:")
+                    imprimir_cursos(session)
+                    id_curso = int(input())
+                    curso = session.query(Curso).filter(Curso.id == id_curso).first()
+                    if curso:
+                        print("======================================")
+                        print("Lista de horarios por el ID de curso: " + str(id_curso))
+                        print("======================================")
+                        for rowC, rowH in session.query(Curso, Horario).join(Horario).filter(
+                                Curso.id == id_curso).all():
+                            print(rowC, '|', rowH)
+                    else:
+                        print("*******Curso no encontrado*****")
                 # volver al menu anterior
                 elif opcion_reportes == 8:
                     opcion_inicial = int(input(mensaje_menu_inicial))
@@ -348,6 +397,10 @@ if __name__ == '__main__':
                     while not opciones_validas(1, 6, opcion_inicial):
                         print(mensaje_invalido)
                         opcion_inicial = int(input(mensaje_menu_inicial))
+            elif opcion_inicial == 4:
+                print(mensaje_despedida)
+            else:
+                print(mensaje_invalido)
 
 
     def opciones_validas(desde, hasta, opcion):
