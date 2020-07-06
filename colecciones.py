@@ -4,6 +4,7 @@ print("nombres", nombres)
 cantidad_nombres = len(nombres)
 print("cantidad_nombres", cantidad_nombres)
 
+# Slicing
 print("nombres[1]", nombres[1])
 print("nombres[1:]", nombres[1:])
 print("nombres[:1]", nombres[:1])

@@ -1,3 +1,7 @@
+# Al multiplicar un string, genera n veces el mismo string
+text_espacios = " " * 10
+print( text_espacios + "text_espacios")
+
 name = "Gustavo"
 msm = "El nombre es %s" % name
 print(msm)

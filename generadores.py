@@ -23,3 +23,35 @@ gen = numeros_pares(15)
 print(gen.__next__())
 
 print(gen.__next__())
+
+"""
+Funciones recursivas
+//se llaman asi misma la funcion 
+"""
+
+def cuenta_regresiva(minutos):
+    minutos -= 1
+    # importante que siempre halla una condicion que controle que no sea infinita
+    if minutos > 0:
+        print("minuto", minutos)
+        cuenta_regresiva(minutos)
+    else:
+        print("Boom exploto la funcion")
+
+print("Funciones recursivas")
+cuenta_regresiva(100)
+
+
+def factorial(num):
+    print("Valor inicial ->", num)
+    if num > 1:
+        # se hace recursiva la funcion
+        num = num * factorial(num - 1)
+    # Devuelve el valor total
+    print("Valor final ->", num)
+    return num
+
+print("Funcion factorial", factorial(10))
+
+
+
