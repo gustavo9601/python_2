@@ -19,7 +19,7 @@ except ZeroDivisionError as e:
     print("type(e)", type(e))
 except TypeError as e:
     print("TypeError y el detalle es => ", e)
-    print("type(e)", type(e))
+    print("type(e)", type(e).__name__)
 except Exception as e:
     print("Ocurrio un error y el detalle es => ", e)
     print("type(e)", type(e))
@@ -49,6 +49,5 @@ try:
     if val1 == val2:
         # lanza la expecion personalizada
         raise NumerosIgualesExepcion("Los numeros son iguales")
-
 except Exception as e:
     print("Error =>", e)

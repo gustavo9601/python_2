@@ -76,5 +76,20 @@ class Cuadrado(FiguraGeometrica):
         return self.ancho * self.alto
 
 
+    # Metodos que se ejecutara, en cuanto se elimina un objeto heredado
+    #Destructor de la clase
+    def __del__(self):
+        print("Se mostrara cuando se elime un objeto insancia de clase Cuadrado, dos veces")
+
+    # Sobrescribe el metodo len, usado en algun objeto
+    def __len__(self):
+        return self.ancho
+
 cuadrado1 = Cuadrado(500,500)
 print("Area de cuadrado => ", cuadrado1.area())
+
+print("Este es el ancho, no el len real ya que esta sobrescrito en la clase",str(len(cuadrado1)))
+
+cuadrado2 = Cuadrado(900,900)
+print("cuadrado2", cuadrado2)
+del cuadrado2
