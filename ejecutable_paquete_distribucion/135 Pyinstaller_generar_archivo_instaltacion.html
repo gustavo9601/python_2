@@ -1,0 +1,294 @@
+<html>
+                <head>
+                <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+                <title>135 Pyinstaller</title>
+                </head>
+                <body>
+                <div class="container">
+                <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <p class="lead"><p>Ya hemos visto como distribuir nuestros paquetes... ¿Pero y si creamos una aplicación y queremos generar un ejecutable para utilizarla? Bueno, en este caso puede ser bastante complicado dependiendo de las dependencias que utilice el programa.<br></p>
+
+
+
+
+
+<p>Por suerte hay un módulo que nos ayudará mucho a generar ejecutables porque automatiza el proceso, ese es <strong>pyinstaller</strong>.</p>
+
+
+
+
+
+<p>Lo que hace es generar un .EXE en Windows, un .DMG en MAC o el ejecutable que utilice el sistema operativo. Dentro del ejecutable se incluye el propio intérprete de Python, y por esa razón podremos utilizarlo en cualquier ordenador sin necesidad de instalar Python previamente.</p>
+
+
+
+
+
+<h4>Instalación</h4>
+
+
+
+
+
+<p>La instalación es muy fácil:<br></p>
+
+
+
+
+
+<pre class="prettyprint linenums">pip install pyinstaller</pre>
+
+
+
+
+
+
+
+
+
+
+
+<p>No hay más.</p>
+
+
+
+
+
+<h4>Primer ejecutable</h4>
+
+
+
+
+
+<p>Comencemos con algo simple, tenemos un script <strong>hola.py</strong>:<br></p>
+
+
+
+
+
+<pre class="prettyprint linenums">print("Hola mundo!")
+</pre>
+
+
+
+
+
+
+
+
+
+
+
+<p>Y queremos crear un ejecutable a partir de él, pues haríamos lo siguiente:</p>
+
+
+
+
+
+<pre class="prettyprint linenums">pyinstaller hola.py</pre>
+
+
+
+
+
+
+
+
+
+
+
+<p>Una vez acabe el proceso se nos habrán creado varias carpetas. La que nos interesa es <strong>dist</strong>, y dentro encontraremos una carpeta con el nombre programa y en esta un montón de ficheros y el ejecutable, en mi caso como estoy en Windows es <strong>hola.exe</strong>.</p>
+
+
+
+
+
+<p>Como es un programa para terminal, para ejecutarlo tengo que abrir la terminal en ese directorio y ejecutar el programa manualmente:</p>
+
+
+
+
+
+<pre class="prettyprint linenums">C:\Users\Hector\Desktop\hola\dist\hola&gt;hola.exe
+Hola mundo!</pre>
+
+
+
+
+
+
+
+
+
+
+
+<h4>Ejecutable con interfaz</h4>
+
+
+
+
+
+<p>Ahora vamos a hacer otro a partir de un simple programa con Tkinter, la librería de componentes integrada en Python que ya conocemos. Nos debería funcionar sin problemas:<br></p>
+
+
+
+
+
+<pre class="prettyprint linenums">from tkinter import *
+root = Tk()
+Label(text='Hola mundo').pack(pady=10)
+root.mainloop()
+</pre>
+
+
+
+
+
+
+
+
+
+
+
+<p>Suponiendo que lo hemos puesto en el mismo script:</p>
+
+
+
+
+
+<pre class="prettyprint linenums">pyinstaller hola.py</pre>
+
+
+
+
+
+
+
+
+
+
+
+<p>En esta ocasión si ejecutamos el programa con doble clic nos funcionará bien, el problema es que se muestra la terminal de fondo.</p>
+
+
+
+
+
+<p>Para que desaparezca tenemos que indicar que es una aplicación en ventana, y eso lo hacemos de la siguiente forma al crear el ejecutable:</p>
+
+
+
+
+
+<pre class="prettyprint linenums">pyinstaller --windowed hola.py</pre>
+
+
+
+
+
+
+
+
+
+
+
+<h4>Ejecutable en un fichero</h4>
+
+
+
+
+
+<p>Ya véis que por defecto Pyinstaller crea un directorio con un montón de ficheros. Podemos utilizar un comando para generar un solo fichero ejecutable que lo contenga todo, pero este ocupara bastante más:<br></p>
+
+
+
+
+
+<pre class="prettyprint linenums">pyinstaller --windowed --onefile hola.py</pre>
+
+
+
+
+
+
+
+
+
+
+
+<h4>Cambiar el icono</h4>
+
+
+
+
+
+<p>También podemos cambiar el icono por defecto del ejecutable. Para ello necesitamos una imagen en formato .ico en el mismo directorio donde tenemos el script.</p>
+
+
+
+
+
+<pre class="prettyprint linenums">pyinstaller --windowed --onefile --icon=./hola.ico hola.py</pre>
+
+
+
+
+
+
+
+
+
+
+
+<p>Si no tenéis uno, podéis utilizar este para probar: <a href="http://www.iconarchive.com/download/i3532/artua/star-wars/Darth-Vader.ico" rel="nofollow" target="_blank">http://www.iconarchive.com/download/i3532/artua/star-wars/Darth-Vader.ico</a></p>
+
+
+
+
+
+<p>Si por algo no os cambia el icono, probad cambiando el nombre del ejecutable. A veces el caché de Windows puede ignorar estas cosas.</p>
+
+
+
+
+
+
+
+<h4>Limitaciones</h4>
+
+
+
+
+
+<p>El gran problema con Pyinstaller como os decía al principio son las dependencias.</p>
+
+
+
+
+
+<p>Si nuestro programa utiliza únicamente módulos de la librería estándard no tendremos ningún problema, pero si queremos utilizar módulos externos es posible que no funcione... A no ser que sea alguno de los soportados como PyQT, django, pandas, matpotlib... pero requieren una configuraciones extra.</p>
+
+
+
+
+
+<p>Si queréis saber más os dejo este enlace con los paquetes soportados: <a href="https://github.com/pyinstaller/pyinstaller/wiki/Supported-Packages" rel="nofollow" target="_blank">https://github.com/pyinstaller/pyinstaller/wiki/Supported-Packages</a></p>
+
+
+
+
+
+<p>Personalmente nunca he hecho nada avanzado, pero si queréis hacerlo y no lo conseguís, os podéis poner en contacto conmigo y estaré encantado de ayudaros.</p>
+
+
+
+
+
+<p>Y con esto llegamos al final... por ahora ;-)</p></p>
+                </div>
+                </div>
+                </div>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+                </body>
+                </html>

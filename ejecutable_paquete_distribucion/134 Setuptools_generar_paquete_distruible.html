@@ -1,0 +1,68 @@
+<html>
+                <head>
+                <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+                <title>134 Setuptools</title>
+                </head>
+                <body>
+                <div class="container">
+                <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <p class="lead"><p>En Python todo el tema de empaquetar puede ser un poco lioso porque encontramos varios módulos destinados a ello. Nosotros vamos a centrarnos en <strong>setuptools</strong>, que es la forma más utilizada. Nos proporciona todo lo necesario para distribuir nuestros propios módulos e incluso nos permite publicar paquetes en el repositorio público <a href="https://pypi.python.org" rel="noopener noreferrer" target="_blank">PyPI (Python Package Index)</a> de forma directa desde la propia terminal.<br></p><p>Si lo recordáis, en la lección de módulos ya os enseñé como crear un distribuible con <strong>setuptools</strong>, a lo largo de esta lección vamos a repasar y aprender varios conceptos nuevos.</p><h4>Paquete básico</h4><p>Antes de comenzar es importante repasar la estructura de un paquete en Python,ya que para distribuir nuestro código es indispensable estructurarlo dentro de un paquete:</p><pre class="prettyprint linenums">| setup.py         # Fichero que contiene toda la información de instalación
++ prueba/          # Directorio del paquete al mismo nivel que setup.py
+   | __init__.py   # Fichero que indica que el directorio es un paquete
+   | modulo.py     # Módulo o script que contiene definiciones</pre><p>Por lo tanto vamos a empaquetar el paquete de nombre <strong>prueba</strong>, que contiene código en el fichero <em>modulo.py</em>.</p><p>Vamos a aprender un poco más sobre el fichero de instalación.</p><h4>setup.py</h4><p>El fichero de configuración incluye toda la información necesaria para realizar la instalación de nuestro paquete. Algunos campos incluyen sólo metadatos como el nombre, la versión, la descripción o el autor. Pero otros sirven para extender la instalación.</p><p>Como sería un caos que cada desarrollador pusiera los campos que quisiera, hay una serie de parámetros comunes y avanzados, pero como son muchos lo más común es utilizar una plantilla base como la siguiente que pasa la configuración a la función <strong>setup</strong>:</p><pre class="prettyprint linenums">from setuptools import setup
+
+setup(name="Prueba",  # Nombre
+      version="0.1",  # Versión de desarrollo
+      description="Paquete de prueba",  # Descripción del funcionamiento
+      author="Hector Costa",  # Nombre del autor
+      author_email='me@hcosta.info',  # Email del autor
+      license="GPL",  # Licencia: MIT, GPL, GPL 2.0...
+      url="http://ejemplo.com",  # Página oficial (si la hay)
+      packages=['prueba'],
+)
+</pre><p>¿Hasta aquí fácil no? Son simples metadatos para definir el paquete, con la excepción de <strong>packages*</strong>, en el que tenemos que indicar todos los paquetes que formarán parte del paquete distribuido en forma de lista.<br><br><em>* Recordad que los subpaquetes se indicarían con paquete.subpaquete, separados con un punto.</em></p><p>Aunque en este caso únicamente tendríamos al paquete <strong>prueba</strong>, imaginaros que tenemos docenas de subpaquetes y tuviéramos que añadirlos uno a uno... Pues para estos casos podemos importar una función que se encargará de buscar automáticamente los subpaquetes, se trata de <strong>find_packages</strong> y la podemos encontrar dentro de <strong>setuptools</strong>:</p><pre class="prettyprint linenums">from setuptools import setup, find_packages
+
+setup(...
+      packages=find_packages()
+)
+</pre><h4>Dependencias</h4><p>Ahora imaginaros que en vuestro paquete algún código utiliza funciones de un módulo externo o paquete que hay que instalar manualmente. Esto se conoce como dependencias del paquete, y por suerte podemos indicar a un parámetro que descargue todos los paquetes en la versión que nosotros indiquemos, se trata de <strong>install_requires</strong>.</p><p>Por ejemplo imaginad que dentro de nuestro paquete necesitamos utilizar el módulo <strong>Pillow</strong> para manejar imágenes. Por regla general podemos instalarlo desde la terminal con el comando:</p><pre class="prettyprint linenums">pip install pillow</pre><p>Pero si queremos que el paquete lo instale automáticamente sólo tenemos que indicarlo de esta forma:</p><pre class="prettyprint linenums">setup(...,
+      install_requires=["pillow"],
+)
+</pre><p>Y así iríamos poniendo todas las dependencias en la lista.</p><p>Lo bueno que tiene es que podemos indicar la versión exacta que queremos instalar, por ejemplo. Si mi programa utilizase la versión 1.1.0 de Pillow tendría que poner:</p><pre class="prettyprint linenums">setup(...,
+      install_requires=["pillow==1.1.0"],
+)
+</pre><p>En cambio si fuera compatible con cualquier versión a partir de la 1.1.5 podría poner:</p><pre class="prettyprint linenums">setup(...,
+      install_requires=["pillow&gt;=1.1.5"],
+)
+</pre><p>Si no indicamos una versión, se instalará automáticamente la más actual.</p><h4>Utilizando un fichero de dependencias</h4><p>De forma similar a antes, quizá llega el momento donde tenemos muchísimas dependencias y es un engorro tener que cambiar directamente el fichero <strong>setup.py</strong>. Para solucionarlo podemos utilizar una técnica que se basa en crear un fichero de texto y escribir las dependencias, una por línea.</p><p>Luego podemos abrir el fichero y añadir las dependencias automáticamente en forma de lista. Generalmente a este fichero se le llama <strong>requirements.txt</strong> y debe estar en el mismo directorio que <strong>setup.py</strong>:</p><h4>requirements.txt</h4><pre class="prettyprint linenums">pillow==1.1.0
+django&gt;=1.10.0,&lt;=1.10.3
+pygame</pre><p>Luego en las dependencias indicaríamos lo siguiente:</p><pre class="prettyprint linenums">setup(...,
+      install_requires=[i.strip() for i in open("requirements.txt").readlines()],
+)
+</pre><h4>Suite Test</h4><p>Otra cosa interesante que podemos hacer es adjuntar una suite de tests unitarios para nuestro paquete, ya sabéis, los que aprendimos en la unidad anterior.</p><p>Para incluirlos tendremos indicar un parámetro en el instalador llamado <strong>test_suite</strong>, al que le pasaremos el nombre del directorio que los contiene, por lo general llamado <strong>tests</strong>:</p><pre class="prettyprint linenums">| setup.py
+| requeriments.txt
++ prueba/          
+   | __init__.py   
+   | modulo.py  
++ tests/
+   | __init__.py
+   | test_pillow.py
+   | test_django.py
+   | test_pygame.py</pre><p>En el <strong>setup.py</strong>:</p><pre class="prettyprint linenums">setup(...,
+      test_suite="tests"
+)
+</pre><p>Luego para ejecutarlos podemos utilizar el comando:</p><pre class="prettyprint linenums">python setup.py test</pre><h4>PyPI y PIP</h4><p>Por último hablemos un poco más del <strong>Python Package Index</strong>.</p><p>Como ya sabéis se trata de un repositorio público con miles y miles de paquetes creados por la enorme comunidad de Python. De hecho yo mismo creé hace años un pequeño módulo para el framework django, os dejo el enlace por si os pica la curiosidad: <a href="https://pypi.python.org/pypi/django-easyregistration" rel="noopener noreferrer" target="_blank">https://pypi.python.org/pypi/django-easyregistration</a></p><p>Sea como sea, la forma de instalar cómodamente los paquetes de PyPI es con la herramienta PIP (un acrónimo recursivo de Pip Installs Packages), utilizando el comando <strong>pip install nombre_paquete</strong>.</p><p>Además podemos listar los paquetes instalados con <strong>pip list</strong>, borrar alguno con <strong>pip uninstall nombre_paquete</strong> o incluso instalar todas las dependencias de un fichero <strong>requisites.txt</strong> utilizando <strong>pip install requisites.txt</strong>.</p><p>Si queréis saber más sobre pip, simplemente escribid <strong>pip</strong> en la terminal.</p><h4>Clasificadores</h4><p>Por lo tanto tenemos un repositorio inmenso, así que ¿cómo podemos añadir información para categorizar nuestro paquete en PyPI? Pues utilizando un parámetro llamado <strong>classifiers</strong> de la siguiente forma:</p><pre class="prettyprint linenums">setup(...,
+    classifiers=[
+        "Development Status :: 3 - Alpha",
+        "Topic :: Utilities",
+        "License :: OSI Approved :: GNU General Public License (GPL)",
+    ],
+)
+</pre><p>Hay un montón de clasificadores, desde el estado del proyecto, el tema, las licencias, etc. Una lista completa de los clasificadores disponibles podemos encontrarla en la propia web de PyPI: <a href="https://pypi.python.org/pypi?%3Aaction=list_classifiers" rel="noopener noreferrer" target="_blank">https://pypi.python.org/pypi?%3Aaction=list_classifiers</a></p><h4>Probando el paquete</h4><p>Una vez tenemos toda la información configurada, podemos probar nuestro paquete fácilmente realizando una instalación en modo desarrollo. Para ello utilizaríamos el siguiente comando:</p><pre class="prettyprint linenums">python setup.py develop</pre><p>Este modo es muy práctico, ya que nos permite utilizar nuestro módulo en cualquier lugar y hacer modificacione sin necesidad de reinstalarlo constamente. Eso es posible porque se utiliza desde el propio directorio.</p><p>Una vez hayamos hecho las probaturas y estemos satisfechos, podemos desinstalar el paquete de desarrollo:</p><pre class="prettyprint linenums">python setup.py develop --uninstall</pre><p>Para instalar el paquete definitivo utilizaríamos:</p><pre class="prettyprint linenums">python setup.py install</pre><p>Pero tenemos que tener en cuenta que una vez hecho esto, el paquete se instala en una copia interna y ya no podremos modificarlo sin antes desinstalarlo, algo que tendremos que hacer con PIP, buscando el nombre del paquete con <strong>pip list</strong> y haciendo un <strong>pip uninstall nombre_paquete</strong>.</p><h4>Distribuyendo el paquete</h4><p>Ya tenemos el paquete, hemos creado el instalador, lo hemos probado y estamos preparados para distribuirlo. Hay dos formas:</p><ul><li><p><strong>Localmente</strong>: Generando un fichero comprimido que podemos compartir con nuestros conocidos.</p></li><li><p><strong>Públicamente</strong>: En el repositorio PyPI para que todo el mundo pueda utilizarlo.</p></li></ul><p>Evidentemente si distribuimos localmente no tenemos que tener mucho cuidado, y además podemos hacer pruebas. Pero si decidimos hacerlo públicamente tendremos que intentar que el paquete tenga un mínimo de calidad.</p><h4>Localmente</h4><p>Distribuir el paquete localmente es muy fáci. Simplemente tenemos que utilizar el comando:</p><pre class="prettyprint linenums">python setup.py sdist</pre><p>Esto generará un directorio <strong>dist/</strong> en la carpeta del paquete. Dentro encontraremos un fichero zip o tar.gz dependiendo de nuestro sistema operativo.</p><p>Este fichero ya podremos compartirlo con quien queramos, y para instalarlo sólo tendremos que utilizar la herramienta <strong>pip</strong>:</p><pre class="prettyprint linenums">pip install nombre_del_fichero.zip  # La extensión depende del sistema operativo</pre><p>Luego para desinstalarlo de la misma forma pero utilizando el nombre del paquete:</p><pre class="prettyprint linenums">pip uninstall nombre_paquete</pre><h4>Públicamente</h4><p>Dicho ésto, si algún día creáis un paquete de calidad y queréis compartirlo con la comunidad, lo primero es <a href="https://pypi.python.org/pypi?%3Aaction=register_form" rel="noopener noreferrer" target="_blank">registrar una cuenta en PyPI</a>.<br></p><p>A continuación desde el directorio de nuestro paquete tenemos que ejecutar el comando:</p><pre class="prettyprint linenums">python setup.py register</pre><p>Así iniciaremos una petición para registrar nuestro paquete en el repositorio. Luego tendremos que seguir los pasos e identificarnos cuando lo pida con nuestro usuario y contraseña (que hemos creado antes).</p><p>Una vez hecho esto ya hemos creado nuestro paquete, pero todavía no hemos publicado una versión, así que vamos a hacerlo utilizando el comando:</p><pre class="prettyprint linenums">python setup.py sdist upload</pre><p>¡Y ya está! Ahora podremos instalar nuestro paquete desde en cualquier lugar con PIP:</p><pre class="prettyprint linenums">pip install nombre_paquete</pre></p>
+                </div>
+                </div>
+                </div>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+                </body>
+                </html>
