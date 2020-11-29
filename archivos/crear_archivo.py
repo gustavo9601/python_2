@@ -26,4 +26,4 @@ with open('archivo_with.txt', 'w') as archivo_with:
 
 
 with open('archivo_with.txt', 'a') as archivo_with:  # a => pushea los datos y no reemplaza
-    archivo_with.writelines(['Lina3\n', 'Linea4\n'])  # .writelines recibe una lista de parametros y las pushea
+    archivo_with.writelines(['\nLina3\n', 'Linea4\n'])  # .writelines recibe una lista de parametros y las pushea

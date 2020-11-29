@@ -1,8 +1,16 @@
 """
 Decoradores:
-Son wrapper que enpaquetan una funcion, y que su ves reciben esa funcion como parametro
-Permite ejecutar al inicio y al fin cierta logica
+Son wrapper que enpaquetan una funcion, y que a su ves reciben esa funcion como parametro
+Permite ejecutar al inicio y al fin cierta logica, como exteneder la funcionalidad
 """
+
+
+def hola():
+    def bienvenido():
+        return "Bienvenido"
+    return bienvenido
+
+print("hola()", hola())
 
 
 def smart_division(div_funcion):
@@ -14,14 +22,14 @@ def smart_division(div_funcion):
 
     return div
 
-
+# @name of function decorador
 @smart_division
 def division(a, b):
     return a / b
 
 
-print(division(10, 5))
-print(division(2, 0))
+print("division(10, 5)", division(10, 5))
+print("division(2, 0)", division(2, 0))
 
 
 def log(funcion):

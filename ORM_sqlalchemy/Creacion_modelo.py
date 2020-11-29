@@ -1,5 +1,5 @@
 """
-ORM Obrject relation mapping
+ORM Object relation mapping
 Crea un modelamiento o abstaccion de las tablas relacionales en el programa, permitiendo
 acceder a la BD a traves de esta interfaz
 """

@@ -1,0 +1,7 @@
+setup.py
+paquete_1/__init__.py
+paquete_1/modulo_saludo.py
+paquete_no_1.egg-info/PKG-INFO
+paquete_no_1.egg-info/SOURCES.txt
+paquete_no_1.egg-info/dependency_links.txt
+paquete_no_1.egg-info/top_level.txt

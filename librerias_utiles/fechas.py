@@ -1,4 +1,6 @@
+# libreria de tiempo
 import datetime
+
 
 hoy = datetime.datetime.now()
 print("hoy", hoy)
@@ -24,3 +26,12 @@ print("fecha2.strftime('%Y/%m/%d %H:%M:%S')", fecha2.strftime('%Y/%m/%d %H:%M:%S
 # Fromateo de fechas de string a datetime
 fecha3 = datetime.datetime.strptime('2020-06-01', '%Y-%m-%d')
 print("fecha3", fecha3)
+
+
+# Libreria que permite ver las zonas horarias del mundio
+# pip3 install pytz
+import pytz
+
+print("Todas las zonas horarias", pytz.all_timezones)
+hora_spain = datetime.datetime.now(pytz.timezone('Europe/Madrid'))
+print("hora_spain", hora_spain)

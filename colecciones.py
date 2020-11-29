@@ -29,7 +29,7 @@ nombres.pop(3)  # pasando el indice como parametro elimina el elemento
 print("nombres.pop(3)", nombres)
 
 del nombres[2]  # elimina el indice indicado
-print("del nombre[]", nombres)
+print("del nombre[2]", nombres)
 
 nombres.clear()  # vacia los elementos de la lista
 print("nombres.clear()", nombres)
@@ -46,6 +46,9 @@ print("lista_numeros.sort()", lista_numeros)
 lista_pares_numeros = [(6, 2), (1, 5), (2, 3), (4, 1), (5, 2), (1, 3)]
 lista_pares_numeros.sort(key=lambda x: x[0] + x[1])
 print("lista_pares_numeros.sort(key=lambda x: x[0] + x[1])", lista_pares_numeros)
+
+lista_comprension_modulo = [numero for numero in range(0, 11) if numero % 2 == 0]
+print("lista_comprension_modulo", lista_comprension_modulo)
 
 # -reverse() revierte el orden a su estado normal
 lista_numeros.reverse()
@@ -92,18 +95,54 @@ Listas por comprenhension
 cuadrados_2 = [x ** 2 for x in range(10)]  # para cada iteracion del for  x se mutipliacara * 2 y retornara el valor
 print("cuadrados_2 comprenhension", cuadrados_2)
 
-# usando map   // map retorna un generador y con list lo parsea a lista
+# usando map   // map retorna un generador y con list lo parsea a lista, este a su ves modifica los valores y los retorna
 cuadrados_3 = list(map(lambda x: x ** 2, range(10)))
 print("cuadrados_3 map", cuadrados_3)
+
+# usando map para hacer operaciones de 2 listas del mismo tamaño
+lista_a = [1, 2, 3, 4]
+lista_b = [5, 6, 7, 8]
+# list(map(lambda parametro1, parametro2: operacion y retorno, parametro1_iterable, parametro2_iterable))
+multiplicar_2_listas = list(map(lambda x, y: x * y, lista_a, lista_b))
+print("multiplicar_2_listas", multiplicar_2_listas)
 
 # usando comprenhencion con una condicion en la funcion
 lista_enteros = [-2, 5, 10, -5, -500, 1, 3, -90]
 lista_enteros_positivos = [x for x in lista_enteros if x >= 0]
+
 print("lista_enteros_positivos", lista_enteros_positivos)
 # usando funcion filter para ejecutar la condicion
-lista_enteros_negativos = list(
-    filter(lambda x: x < 0, lista_enteros))  # // filter(lambda variable_temporal: condicion, objeto_iterable)
+# // filter(lambda variable_temporal: condicion, objeto_iterable)
+lista_enteros_negativos = list(filter(lambda x: x < 0, lista_enteros))
 print("lista_enteros_negativos", lista_enteros_negativos)
+
+
+# ========================================
+# Filtrando elementos objetos de una clase
+class Persona:
+    def __init__(self, nombre, edad):
+        self.nombre = nombre
+        self.edad = edad
+
+    def __str__(self):
+        return f"Nombre: {self.nombre} y edad {self.edad}"
+
+
+# lista de objetos de clase persona
+lista_personas = [
+    Persona('Gustavo', 24),
+    Persona('Meliza', 22),
+    Persona('Martha', 55),
+    Persona('Juan viejo', 100)
+]
+
+# Filtro que retornara las personas que tengan edad < 60 de la lista lista_personas
+# list(filter(lambda variable_parametro: varaiable condicion de retorno, objeto_ierable) )
+
+lista_personas_menores_60 = list(filter(lambda persona: persona.edad < 60, lista_personas))
+print("lista_personas_menores_60", lista_personas_menores_60)
+for personas_menor_60 in lista_personas_menores_60:
+    print("personas_menor_60", personas_menor_60)
 
 # Retornando una pareja de valores numero y su cuadrado
 # //[(valor, valor_operacion) for valor in lista_iterable]
@@ -183,6 +222,7 @@ print("a & b", a & b)  # letras en a y en b
 print("a ^ b", a ^ b)  # letras en a o b pero no en ambas
 
 # comprension en conjuntos
+# Listas o conjuntos avanzadas en una misma linea
 a = {x for x in 'abracadabra' if x not in 'abc'}  # retorna todas las letras, que no este dentro de abc
 print("{x for x in 'abracadabra' if x not in 'abc'}", a)
 
@@ -213,7 +253,7 @@ print("libros.get('genero')", libros.get('genero', 'full xx'))
 libros.setdefault('precios', 1000)
 
 # .update({}  | [(),()])  Recibe un diccionario o una lista con tuplas (llave, valor) actualiza de encontrar, sino lo crea
-libros.update({'precios' : 800000})
+libros.update({'precios': 800000})
 
 for llave in libros:
     print("llave => ", llave, " | valor => ", libros.get(llave))

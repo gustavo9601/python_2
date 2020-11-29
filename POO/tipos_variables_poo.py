@@ -7,6 +7,9 @@ class MiClase:
         # variable de instancia
         self.variable_de_instancia = variable_de_instancia
 
+    def metodo_de_instancia(self):
+        return self.variable_de_instancia
+
     @staticmethod
     def metodo_estatico():
         print("Metodo estatico")
@@ -25,6 +28,7 @@ print("MiClase.variable_de_clase", MiClase.variable_de_clase)
 clase1 = MiClase("Variable instancia")
 clase1.variable_de_clase = "Cambio de valor en variable de clase"
 print("clase1.variable_de_instancia", clase1.variable_de_instancia)
+print("clase1.metodo_de_instancia", clase1.metodo_de_instancia())
 print("clase1.variable_de_clase", clase1.variable_de_clase)
 
 # Los metodos de clase estaticos, no necesitan instancia

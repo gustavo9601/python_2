@@ -25,4 +25,6 @@ print("hola")
 
 # pdb.set_trace() generera el break point
 pdb.set_trace()
+
+pdb.help()
 print("mundo")

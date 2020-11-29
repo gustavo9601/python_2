@@ -22,7 +22,7 @@ archivo1.close()
 
 """
 Abriendo y cerrando automaticamente un archivo
-usando cotect manager con With
+usando content manager con With
 
  with ejecuta __enter__ y al finalizar __exit__
 """

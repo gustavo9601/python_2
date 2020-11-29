@@ -31,7 +31,7 @@ Concatenando los elementos de una lista
 'separador'.join(lista[])
 """
 msm = ' '.join(['Hola', name])
-print(msm)
+print("msm", msm)
 
 """ 
 Trasnformaciones de strings
@@ -42,6 +42,7 @@ print("capitalize", s2.capitalize())
 print("lower", s2.lower())
 print("upper", s2.upper())
 print("strip", s2.strip())
+print("strip", s2.strip("-"))
 print("split", s2.split(" "))
 print("swapcase", s2.swapcase())
 print("title", s2.title())
