@@ -5,13 +5,13 @@ class Carro:
         self.__color = color  # colocando __nameVariable hace que sea privada la variable y solo se puede usar dentro de la clase
 
     """
+    Encapsulamiento: Define el acceso a los atributos y metodos de clase
     Por convencion para acceder o editar valores a atributos privados de clase
     se pueden usar funciones que inicien get_nameVarible y set_nameVariable
     
     publica: accede desde instancia, heradado y de clase
     protected: accede desde instancia heradado y de clase
     private: accede desde clase
-    
     """
     def get_color(self):
         return self.__color
