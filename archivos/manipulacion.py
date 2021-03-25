@@ -1,5 +1,6 @@
 # Importando libreria para abrir archivos
 from io import open
+from os import path, remove
 
 texto1 = 'Linea 1\nLinea 2\nLinea 3'
 
@@ -26,6 +27,19 @@ print("text_fichero1", text_fichero1)
 with open('./files_manipulacion/fichero1.txt', 'r') as fichero:
     for idx, linea in enumerate(fichero):
         print("idx => ", idx, ' linea =>', linea)
+
+
+
+#########################################
+# Eliminando archivo si existe
+if path.isfile('file_pruebas.txt'):
+    remove('file_pruebas.txt')
+    print("Eliminado el archivo file_pruebas.txt")
+else:
+    print('No existe el archivo [file_pruebas.txt]')
+
+#file_test = open('file_pruebas.txt', 'w')
+#file_test.close()
 
 #############################################
 # Guardar valores en binarios con libreria pickle

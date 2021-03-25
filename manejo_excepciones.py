@@ -19,6 +19,8 @@ except ZeroDivisionError as e:
     print("type(e)", type(e))
 except TypeError as e:
     print("TypeError y el detalle es => ", e)
+    # type(e).__name__ => devuelve el nombre de la clase que se genero en tiempo de ejecucion
+    # De esta forma ya s pude controlar directamente el nombre de esa clase Expection
     print("type(e)", type(e).__name__)
 except Exception as e:
     print("Ocurrio un error y el detalle es => ", e)
@@ -40,6 +42,8 @@ class NumerosIgualesExepcion(Exception):
     def __init__(self, mensaje):
         #message se hereda de la clase exception
         self.message = mensaje
+        # Otra forma de pasar al constructor padre
+        #super().__init__(mensaje)
 
 try:
     val1 = int(input("Digite valor 1:\n"))
@@ -47,7 +51,10 @@ try:
 
     # validacion simple si son iguales
     if val1 == val2:
-        # lanza la expecion personalizada
+        # lanza la excepion personalizada
         raise NumerosIgualesExepcion("Los numeros son iguales")
 except Exception as e:
     print("Error =>", e)
+    print("Error type =>", type(e).__name__)
+finally:
+    print("Finalyyyy")

@@ -32,8 +32,8 @@ with open("prueba.txt", 'r') as archivo_con_with:
 
 
 """
-f.seek(desplazamiento, desde_donde)  
-desplazamiento => posicion en bytes a desplazarce
+f.seek(posicion_inicial, desde_donde)  
+posicion_inicial => posicion en bytes a ubicarse en el archivo
 desde_donde => 0 inicio, 1 posicion actual, 2 final archivo
 """
 with open("prueba.txt", 'r') as archivo_con_with:

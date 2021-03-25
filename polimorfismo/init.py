@@ -1,5 +1,6 @@
 """
-Polimorfismo, => hace referencia a las diferentes formas que podra tomar una variable al llamar diferentes clases o instancias
+Polimorfismo, => hace referencia a las diferentes formas que podra tomar una variable al llamar diferentes clases o instancias,
+sobrescribiendo posibles metodos heradados del padre
 """
 from empleado import Empleado
 from gerente import Gerente
