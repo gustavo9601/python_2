@@ -1,5 +1,7 @@
 # improtanodo libreria
 import sqlite3
+import random
+
 
 # creando la conexion, o el archivo nuevo si no existe
 conexion = sqlite3.connect('test_bd.db')
@@ -11,10 +13,11 @@ cursor = conexion.cursor()
 
 # insertando varios registros
 usuarios_insert = [
-    ('Laura', 22, 'laur'),
-    ('Martha', 55, 'mart'),
+    ('Laura', random.randint(1, 5000) , 'laur'),
+    ('Martha', random.randint(1, 5000) , 'mart'),
 ]
 
+# Ejecutando varios registors al tiempo
 cursor.executemany("INSERT INTO usuarios VALUES (?,?,?)", usuarios_insert)
 
 conexion.commit()

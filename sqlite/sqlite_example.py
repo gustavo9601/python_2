@@ -2,14 +2,15 @@
 import sqlite3
 
 # sqlite3.connect(path_archivo_BD || memory)
-# si esta en memoria, una ves finalizada la ejecicion la memoria se pierde
+# Si no existe el archivo de BD lo crea desde 0
+# si esta en memoria, una ves finalizada la ejecucion la memoria se pierde
 connection = sqlite3.connect(':memory:')
 
 # Cursor
 cursor = connection.cursor()
 
 #Consulta sql a ejecutar
-sql = """CREATE TABLE currency
+sql = """CREATE TABLE IF NOT EXISTS currency
         (ID INTEGER PRIMARY KEY, NAME TEXT, SYMBOL TEXT)"""
 
 #Ejecutando la consulta
