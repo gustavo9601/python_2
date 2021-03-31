@@ -32,6 +32,8 @@ with open('./files_manipulacion/fichero1.txt', 'r') as fichero:
 
 #########################################
 # Eliminando archivo si existe
+# path.exists('name.file.ext') // Otra forma
+# os.rmdir('directory')  // Elimina carpeta
 if path.isfile('file_pruebas.txt'):
     remove('file_pruebas.txt')
     print("Eliminado el archivo file_pruebas.txt")
