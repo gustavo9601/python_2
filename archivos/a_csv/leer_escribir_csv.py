@@ -6,7 +6,7 @@ with open('csv_example.csv', 'r') as csv_example:
     reader_csv = csv.reader(csv_example)
     for row in reader_csv:
         print(row)
-        # hacemos la separacion del string
+        # Join the list to a string
         print(', '.join(row))
 
 #Escritura de archivo

@@ -43,7 +43,7 @@ print("lower", s2.lower())
 print("upper", s2.upper())
 print("strip", s2.strip())
 print("strip", s2.strip("-"))
-print("split", s2.split(" "))
+print("split", s2.split(" ")) # slice the string, depend of the parameter between parenthesis and return a list
 print("swapcase", s2.swapcase())
 print("title", s2.title())
 print("replace('u', 's')", s2.replace('u', 's'))
@@ -54,10 +54,10 @@ print("zfill(16)", s2.zfill(16))
 Analizar cadenas de texto
 """
 texto = "Hello World 2020"
-print('texto.count("o")', texto.count("o"))
+print('texto.count("o")', texto.count("o")) # Count the quantity of times there are in the string
 print('texto.startswith("H")', texto.startswith("H"))
 print('texto.endswith("h")', texto.endswith("h"))
-print('texto.find("llo")', texto.find("llo"))
+print('texto.find("llo")', texto.find("llo")) # Return the position in the string, where find the string
 print('texto.index("l")', texto.index("l"))
 print('texto.rfind("l")', texto.rfind("l"))
 print('texto.rindex("l")', texto.rindex("l"))
