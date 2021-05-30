@@ -31,3 +31,10 @@ print("numeros_rango => ", numeros_rango)
 # devuelve un random entero
 print("random.randrange(11) => ", random.randrange(11))  # numeros >= 0 y <11
 print("random.randrange(0,101,5) => ", random.randrange(0, 101, 5))  # numero >= 0 and < 101 de 5 en 5
+
+
+word_list = ['a', 'b', 'c']
+def generate_password():
+    return random.choice(word_list) + random.choice(word_list) + random.choice(word_list)
+
+print(generate_password())

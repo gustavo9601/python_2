@@ -15,4 +15,7 @@ print(f'redondeo inferior', round_low)
 round_upper = math.ceil(4.999)
 print(f'redondeo superior', round_upper)
 
+num_factorial = 5
+print("factorial: ", math.factorial(num_factorial))
+
 
