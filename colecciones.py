@@ -49,9 +49,23 @@ print("lista_pares_numeros.sort(key=lambda x: x[0] + x[1])", lista_pares_numeros
 
 lista_comprension_modulo = [numero for numero in range(0, 11) if numero % 2 == 0]
 print("lista_comprension_modulo", lista_comprension_modulo)
+# Con un condicional and else
+lista_comprension_modulo_2 = [numero if numero % 2 == 0 else numero ** 2 for numero in range(0, 11)]
+print("lista_comprension_modulo_2", lista_comprension_modulo_2)
 
 # -reverse() revierte el orden a su estado normal
 lista_numeros.reverse()
+
+scores = {
+    "Rick Sanchez": 70,
+    "Morty Smith": 35,
+    "Summer Smith": 82,
+    "Jerry Smith": 23,
+    "Beth Smith": 98
+}
+# list comprenhension with a dictionary
+passed = [name for name, score in scores.items() if score >= 65]
+print(passed)
 
 # sorted(objeto_iterable, reverse=True)  # permite ordenar cualquier tipo de dato de un objeto iterable
 lista_paises = ['colombia', 'brasil', 'argentica', 'canada']
