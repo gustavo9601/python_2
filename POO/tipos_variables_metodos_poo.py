@@ -30,7 +30,6 @@ clase1.variable_de_clase = "Cambio de valor en variable de clase"
 print("clase1.variable_de_instancia", clase1.variable_de_instancia)
 print("clase1.metodo_de_instancia", clase1.metodo_de_instancia())
 print("clase1.variable_de_clase", clase1.variable_de_clase)
-
 # Los metodos de clase estaticos, no necesitan instancia
 MiClase.metodo_estatico()
 MiClase.metodo_de_clase()

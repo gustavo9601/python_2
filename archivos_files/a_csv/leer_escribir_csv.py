@@ -9,7 +9,7 @@ with open('csv_example.csv', 'r') as csv_example:
         # Join the list to a string
         print(', '.join(row))
 
-#Escritura de archivo
+# Escritura de archivo
 with open('csv_example.csv', 'a') as csv_example:
     # crea el objeto de escritura
     writer_csv = csv.writer(csv_example, quoting=csv.QUOTE_NONE, quotechar='|', doublequote=False)
