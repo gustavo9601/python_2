@@ -1,6 +1,10 @@
 # libreria de tiempo
 import datetime
+# o from datetime import datetime
 
+# trae la hora universal
+hoy_utc = datetime.datetime.utcnow()
+print("hoy_utc", hoy_utc)
 
 hoy = datetime.datetime.now()
 print("hoy", hoy)
@@ -34,4 +38,6 @@ import pytz
 
 print("Todas las zonas horarias", pytz.all_timezones)
 hora_spain = datetime.datetime.now(pytz.timezone('Europe/Madrid'))
+hora_bogota = datetime.datetime.now(pytz.timezone('America/Bogota'))
 print("hora_spain", hora_spain)
+print("hora_bogota", hora_bogota)
